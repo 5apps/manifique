@@ -1,4 +1,5 @@
 require 'faraday'
+require 'faraday_middleware'
 require "nokogiri"
 require 'nitlink/response'
 
@@ -10,7 +11,12 @@ module Manifique
     end
 
     def fetch_web_manifest
-      @url
+      conn = Faraday.new do |b|
+        b.use FaradayMiddleware::FollowRedirects
+        b.adapter :net_http
+      end
+      res = conn.get @url
+      raise res.inspect
     end
   end
 end

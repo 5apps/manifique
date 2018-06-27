@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "~> 5.0"
 
   spec.add_runtime_dependency "faraday", "~> 0.15.2"
+  spec.add_runtime_dependency "faraday_middleware", "~> 0.12.2"
   spec.add_runtime_dependency "nokogiri", "~> 1.8"
   spec.add_runtime_dependency "nitlink", "~> 1.1"
 end
