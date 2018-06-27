@@ -1,5 +1,5 @@
 require "manifique/version"
 
 module Manifique
-  # Your code goes here...
+  autoload :Agent, "manifique/agent"
 end

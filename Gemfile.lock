@@ -2,11 +2,21 @@ PATH
   remote: .
   specs:
     manifique (0.1.0)
+      faraday (~> 0.15.2)
+      nitlink (~> 1.1)
+      nokogiri (~> 1.8)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    faraday (0.15.2)
+      multipart-post (>= 1.2, < 3)
+    mini_portile2 (2.3.0)
     minitest (5.11.3)
+    multipart-post (2.0.0)
+    nitlink (1.1.0)
+    nokogiri (1.8.3)
+      mini_portile2 (~> 2.3.0)
     rake (10.5.0)
 
 PLATFORMS

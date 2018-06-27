@@ -5,7 +5,8 @@ class ManifiqueTest < Minitest::Test
     refute_nil ::Manifique::VERSION
   end
 
-  # def test_it_does_something_useful
-  #   assert true
-  # end
+  def test_fetch_metadata
+    agent = Manifique::Agent.new(url: 'https://example.com')
+    assert_equal agent.fetch_metadata, 'https://example.com'
+  end
 end
