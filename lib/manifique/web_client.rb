@@ -7,7 +7,7 @@ require 'pry'
 
 module Manifique
   class WebClient
-    def initialize(options)
+    def initialize(options={})
       @options = options
       @url = options[:url]
     end
