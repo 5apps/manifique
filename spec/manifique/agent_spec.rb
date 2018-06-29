@@ -1,6 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Manifique::Agent do
+
   describe "options" do
     describe "URL validation" do
       context "with invalid URL" do
@@ -19,4 +20,9 @@ RSpec.describe Manifique::Agent do
       end
     end
   end
+
+  describe "#fetch_metadata" do
+
+  end
+
 end

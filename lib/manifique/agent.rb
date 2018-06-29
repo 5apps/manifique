@@ -3,6 +3,7 @@ require "manifique/web_client"
 
 module Manifique
   class Agent
+
     def initialize(options={})
       @options = options
 
@@ -15,7 +16,7 @@ module Manifique
 
     def fetch_metadata
       web_client = WebClient.new(url: @url)
-      web_client.fetch_web_manifest
+      web_client.fetch_metadata
     end
 
     private
@@ -27,5 +28,6 @@ module Manifique
     rescue URI::InvalidURIError
       false
     end
+
   end
 end

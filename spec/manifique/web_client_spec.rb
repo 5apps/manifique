@@ -2,6 +2,7 @@ require "spec_helper"
 require "manifique/web_client"
 
 RSpec.describe Manifique::WebClient do
+
   describe "#do_get_request" do
     before do
       stub_request(:get, "http://example.com/404").
@@ -49,7 +50,29 @@ RSpec.describe Manifique::WebClient do
     end
   end
 
+  describe "#fetch_website" do
+    let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social/") }
+
+    before do
+      index_html = File.read(File.join(__dir__, "..", "fixtures", "mastodon.html"));
+      stub_request(:get, "https://kosmos.social/").
+        to_return(body: index_html, status: 200, headers: {
+          "Content-Type": "text/html; charset=utf-8"
+        })
+
+      web_client.fetch_website
+    end
+
+    it "instantiates an HTML parser object" do
+      html = web_client.instance_variable_get("@html")
+
+      expect(html).to be_kind_of(Nokogiri::HTML::Document)
+    end
+  end
+
   describe "#fetch_web_manifest" do
+    let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social/") }
+
     context "link[rel=manifest] present" do
       before do
         index_html = File.read(File.join(__dir__, "..", "fixtures", "mastodon.html"));
@@ -62,12 +85,11 @@ RSpec.describe Manifique::WebClient do
           to_return(body: manifest, status: 200, headers: {
             "Content-Type": "application/json; charset=utf-8"
           })
+
+        web_client.fetch_website
       end
 
-      let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social") }
-
       subject do
-        web_client.fetch_website
         web_client.fetch_web_manifest
       end
 
@@ -84,12 +106,11 @@ RSpec.describe Manifique::WebClient do
           to_return(body: index_html, status: 200, headers: {
             "Content-Type": "text/html; charset=utf-8"
           })
+
+        web_client.fetch_website
       end
 
-      let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social") }
-
       subject do
-        web_client.fetch_website
         web_client.fetch_web_manifest
       end
 
@@ -98,4 +119,35 @@ RSpec.describe Manifique::WebClient do
       end
     end
   end
+
+  describe "#fetch_metadata" do
+    let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social/") }
+
+    context "web app manifest present" do
+      before do
+        index_html = File.read(File.join(__dir__, "..", "fixtures", "mastodon.html"));
+        stub_request(:get, "https://kosmos.social/").
+          to_return(body: index_html, status: 200, headers: {
+            "Content-Type": "text/html; charset=utf-8"
+          })
+        manifest = File.read(File.join(__dir__, "..", "fixtures", "mastodon-web-app-manifest.json"));
+        stub_request(:get, "https://kosmos.social/mastodon-web-app-manifest.json").
+          to_return(body: manifest, status: 200, headers: {
+            "Content-Type": "application/json; charset=utf-8"
+          })
+      end
+
+      subject { web_client.fetch_metadata }
+
+      it "returns a metadata object" do
+        expect(subject).to be_kind_of(Manifique::Metadata)
+      end
+
+      it "stores the web app manifest data" do
+        expect(subject.manifest).to be_kind_of(Hash)
+        expect(subject.manifest["name"]).to eq("kosmos.social")
+      end
+    end
+  end
+
 end
