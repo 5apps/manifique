@@ -144,8 +144,29 @@ RSpec.describe Manifique::WebClient do
       end
 
       it "stores the web app manifest data" do
-        expect(subject.manifest).to be_kind_of(Hash)
-        expect(subject.manifest["name"]).to eq("kosmos.social")
+        expect(subject.web_manifest).to be_kind_of(Hash)
+        expect(subject.web_manifest["name"]).to eq("kosmos.social")
+      end
+    end
+
+    context "no web app manifest present" do
+      before do
+        index_html = File.read(File.join(__dir__, "..", "fixtures", "mastodon-no-manifest.html"));
+        stub_request(:get, "https://kosmos.social/").
+          to_return(body: index_html, status: 200, headers: {
+            "Content-Type": "text/html; charset=utf-8"
+          })
+      end
+
+      subject { web_client.fetch_metadata }
+
+      it "returns a metadata object" do
+        expect(subject).to be_kind_of(Manifique::Metadata)
+      end
+
+      it "parses and stores metadata from HTML" do
+        pending
+        # expect(subject.html).to be_kind_of(Hash)
       end
     end
   end

@@ -11,14 +11,14 @@ module Manifique
     def initialize(options={})
       @options = options
       @url = options[:url]
-      @metadata = Metadata.new
+      @metadata = Metadata.new(url: @url)
     end
 
     def fetch_metadata
       fetch_website
-      manifest = fetch_web_manifest
+      fetch_web_manifest
 
-      if @metadata.manifest = manifest
+      if @metadata.web_manifest
         return @metadata
       else
         #TODO assemble from HTML elements
@@ -44,7 +44,7 @@ module Manifique
 
       res = do_get_request manifest_url
 
-      JSON.parse(res.body) rescue false
+      @metadata.web_manifest = JSON.parse(res.body) rescue false
     end
 
     private
