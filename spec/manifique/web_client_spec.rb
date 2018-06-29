@@ -64,9 +64,9 @@ RSpec.describe Manifique::WebClient do
           })
       end
 
-      let(:agent) { Manifique::WebClient.new(url: "https://kosmos.social") }
+      let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social") }
 
-      subject { agent.fetch_web_manifest }
+      subject { web_client.fetch_web_manifest }
 
       it "fetches and returns the manifest" do
         expect(subject).to be_kind_of(Hash)
