@@ -55,8 +55,6 @@ module Manifique
     end
 
     def discover_web_manifest_url(links, doc)
-      # TODO implement/test link header discovery
-      # if url = links.by_rel('manifest').target.to_s or
       if url = doc.at_css("link[rel=manifest]").attributes["href"].value
         return url
       else
