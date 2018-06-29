@@ -27,6 +27,8 @@ module Manifique
       res = conn.get url
       if res.status > 400
         raise "Could not fetch #{url} successfully (#{res.status})"
+      else
+        res
       end
     end
   end

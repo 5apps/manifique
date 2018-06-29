@@ -3,6 +3,9 @@ require "manifique/web_client"
 
 RSpec.describe Manifique::WebClient do
   before do
+    stub_request(:get, "http://example.com/200_empty").
+      to_return(body: "", status: 200, headers: {})
+
     stub_request(:get, "http://example.com/404").
       to_return(body: "", status: 404, headers: {})
 
@@ -32,23 +35,17 @@ RSpec.describe Manifique::WebClient do
         end
       end
     end
-  end
 
-  # describe "HTTP requests" do
-  #   let(:connection) do
-  #     Faraday.new do |builder|
-  #       builder.adapter :test do |stub|
-  #         stub.get('/api/v2/cake') { |env| [ 200, {}, env.params.to_json ]}
-  #         stub.post('/api/v2/pizza/body') { |env| [ 200, {}, env.body ]}
-  #         stub.post('/api/v2/pizza/query') { |env| [ 200, {}, env.params.to_json ]}
-  #         stub.delete('/api/v2/gluhwein') { |env| [ 200, {}, 'delete' ]}
-  #       end
-  #     end
-  #   end
-  #
-  #   it "requests via get" do
-  #     expect(subject).to receive(:connection).and_return(connection)
-  #     expect(subject.get('/cake', {query: 'coffee'}).body).to eql('{"query":"coffee"}')
-  #   end
-  # end
+    context "successful requests" do
+      describe "200" do
+        let(:client) { Manifique::WebClient.new }
+
+        subject { client.send(:do_get_request, 'http://example.com/200_empty') }
+
+        it "returns the response" do
+          expect(subject.status).to eq(200)
+        end
+      end
+    end
+  end
 end
