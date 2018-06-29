@@ -12,11 +12,14 @@ module Manifique
       @url = options[:url]
     end
 
-    def fetch_web_manifest
+    def fetch_website
       res = do_get_request @url
-      links = parse_http_link_header(res)
-      doc = Nokogiri::HTML(res.body)
-      manifest_url = discover_web_manifest_url(links, doc)
+      @links = parse_http_link_header(res)
+      @html = Nokogiri::HTML(res.body)
+    end
+
+    def fetch_web_manifest
+      return false unless manifest_url = discover_web_manifest_url(@html)
 
       unless manifest_url.match(/^https?\:\/\//)
         # Link is just the manifest path, not an absolute URL
@@ -25,13 +28,7 @@ module Manifique
 
       res = do_get_request manifest_url
 
-      begin
-        manifest_data = JSON.parse(res.body)
-      rescue
-        manifest_data = false
-      end
-
-      manifest_data
+      JSON.parse(res.body) rescue false
     end
 
     private
@@ -54,12 +51,10 @@ module Manifique
       link_parser.parse(response)
     end
 
-    def discover_web_manifest_url(links, doc)
-      if url = doc.at_css("link[rel=manifest]").attributes["href"].value
-        return url
-      else
-        raise "No Web App Manifest found on #{@url}"
-      end
+    def discover_web_manifest_url(html)
+      html.at_css("link[rel=manifest]").attributes["href"].value
+    rescue
+      false
     end
   end
 end

@@ -66,11 +66,35 @@ RSpec.describe Manifique::WebClient do
 
       let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social") }
 
-      subject { web_client.fetch_web_manifest }
+      subject do
+        web_client.fetch_website
+        web_client.fetch_web_manifest
+      end
 
       it "fetches and returns the manifest" do
         expect(subject).to be_kind_of(Hash)
         expect(subject["name"]).to eq("kosmos.social")
+      end
+    end
+
+    context "no link[rel=manifest] element found" do
+      before do
+        index_html = File.read(File.join(__dir__, "..", "fixtures", "mastodon-no-manifest.html"));
+        stub_request(:get, "https://kosmos.social/").
+          to_return(body: index_html, status: 200, headers: {
+            "Content-Type": "text/html; charset=utf-8"
+          })
+      end
+
+      let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social") }
+
+      subject do
+        web_client.fetch_website
+        web_client.fetch_web_manifest
+      end
+
+      it "returns false" do
+        expect(subject).to be(false)
       end
     end
   end
