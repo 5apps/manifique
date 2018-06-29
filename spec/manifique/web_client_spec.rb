@@ -93,7 +93,7 @@ RSpec.describe Manifique::WebClient do
         web_client.fetch_web_manifest
       end
 
-      it "fetches and returns the manifest" do
+      it "returns the fetched manifest as a hash" do
         expect(subject).to be_kind_of(Hash)
         expect(subject["name"]).to eq("kosmos.social")
       end
@@ -139,13 +139,13 @@ RSpec.describe Manifique::WebClient do
 
       subject { web_client.fetch_metadata }
 
-      it "returns a metadata object" do
+      it "returns a metadata object with the manifest properties loaded" do
         expect(subject).to be_kind_of(Manifique::Metadata)
+        expect(subject.name).to eq("kosmos.social")
       end
 
-      it "stores the web app manifest data" do
-        expect(subject.web_manifest).to be_kind_of(Hash)
-        expect(subject.web_manifest["name"]).to eq("kosmos.social")
+      it "knows which properties were loaded from the web app manifest" do
+        expect(subject.from_web_manifest.length).to eq(10)
       end
     end
 
@@ -160,13 +160,15 @@ RSpec.describe Manifique::WebClient do
 
       subject { web_client.fetch_metadata }
 
-      it "returns a metadata object" do
+      it "returns a metadata object with the HTML properties loaded" do
         expect(subject).to be_kind_of(Manifique::Metadata)
+        expect(subject.name).to eq("kosmos.social")
+        expect(subject.description).to eq("A friendly place for tooting")
       end
 
-      it "parses and stores metadata from HTML" do
-        pending
-        # expect(subject.html).to be_kind_of(Hash)
+      it "knows which properties were loaded from HTML" do
+        expect(subject.from_html).to include("name")
+        expect(subject.from_html).to include("description")
       end
     end
   end

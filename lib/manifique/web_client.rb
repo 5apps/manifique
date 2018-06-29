@@ -16,12 +16,10 @@ module Manifique
 
     def fetch_metadata
       fetch_website
-      fetch_web_manifest
-
-      if @metadata.web_manifest
-        return @metadata
+      if manifest = fetch_web_manifest
+        @metadata.load_from_web_manifest(manifest)
       else
-        #TODO assemble from HTML elements
+        parse_metadata_from_html
       end
 
       @metadata
@@ -44,10 +42,23 @@ module Manifique
 
       res = do_get_request manifest_url
 
-      @metadata.web_manifest = JSON.parse(res.body) rescue false
+      JSON.parse(res.body) rescue false
     end
 
     private
+
+    def parse_metadata_from_html
+      if title = @html.at_css("title") and !title.text.empty?
+        @metadata.name = title.text
+        @metadata.from_html.push "name"
+      end
+      # TODO extract meta element parsing to seperate method
+      if desc = @html.at_css("meta[name=description]") and
+         !desc.attributes["content"].value.empty?
+        @metadata.description = desc.attributes["content"].value
+        @metadata.from_html.push "description"
+      end
+    end
 
     def do_get_request(url)
       conn = Faraday.new do |b|

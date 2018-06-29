@@ -15,7 +15,7 @@ RSpec.describe Manifique::Metadata do
     let(:manifest) { JSON.parse(File.read(File.join(__dir__, "..", "fixtures", "mastodon-web-app-manifest.json"))) }
 
     before do
-      metadata.web_manifest = manifest
+      metadata.load_from_web_manifest(manifest)
     end
 
     it "stores the manifest properties as metadata object properties" do
