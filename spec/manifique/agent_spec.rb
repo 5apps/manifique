@@ -5,8 +5,8 @@ RSpec.describe Manifique::Agent do
     describe "URL validation" do
       context "with invalid URL" do
         it "raises an exception" do
-          expect { Manifique::Agent.new }.to raise_error
-          expect { Manifique::Agent.new(url: "htp://example.com") }.to raise_error
+          expect { Manifique::Agent.new }.to raise_error(RuntimeError)
+          expect { Manifique::Agent.new(url: "htp://example.com") }.to raise_error(RuntimeError)
         end
       end
 
