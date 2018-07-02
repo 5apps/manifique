@@ -48,15 +48,44 @@ module Manifique
     private
 
     def parse_metadata_from_html
+      parse_title_from_html
+      parse_meta_elements_from_html
+      parse_display_mode_from_html
+    end
+
+    def parse_title_from_html
+      return if @metadata.name
+
       if title = @html.at_css("title") and !title.text.empty?
         @metadata.name = title.text
         @metadata.from_html.push "name"
       end
-      # TODO extract meta element parsing to seperate method
-      if desc = @html.at_css("meta[name=description]") and
-         !desc.attributes["content"].value.empty?
-        @metadata.description = desc.attributes["content"].value
-        @metadata.from_html.push "description"
+    end
+
+    def parse_meta_elements_from_html
+      {
+        description: "description",
+        theme_color: "theme-color"
+      }.each do |prop, name|
+        next if @metadata.send("#{prop}")
+        if value = get_meta_element_value(name)
+          @metadata.send "#{prop}=", value
+          @metadata.from_html.push prop.to_s
+        end
+      end
+    end
+
+    def parse_display_mode_from_html
+      return if @metadata.display
+      if get_meta_element_value("apple-mobile-web-app-capable") == "yes"
+        @metadata.display = "standalone"
+        @metadata.from_html.push "display"
+      end
+    end
+
+    def get_meta_element_value(name)
+      if el = @html.at_css("meta[name=#{name}]") and !el.attributes["content"].value.empty?
+        el.attributes["content"].value
       end
     end
 

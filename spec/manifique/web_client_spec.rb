@@ -164,11 +164,14 @@ RSpec.describe Manifique::WebClient do
         expect(subject).to be_kind_of(Manifique::Metadata)
         expect(subject.name).to eq("kosmos.social")
         expect(subject.description).to eq("A friendly place for tooting")
+        expect(subject.theme_color).to eq("#282c37")
+        expect(subject.display).to eq("standalone")
       end
 
       it "knows which properties were loaded from HTML" do
-        expect(subject.from_html).to include("name")
-        expect(subject.from_html).to include("description")
+        %w{ name description theme_color display }.each do |property|
+          expect(subject.from_html).to include(property)
+        end
       end
     end
   end
