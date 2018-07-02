@@ -92,8 +92,7 @@ module Manifique
     end
 
     def parse_icons_from_html
-      icon_links = @html.css("link[rel=icon]")
-      if icon_links.any?
+      if icon_links = @html.css("link[rel=icon]")
         icon_links.each do |link|
           icon = {}
           icon["src"] = link.attributes["href"].value rescue nil
@@ -102,6 +101,15 @@ module Manifique
           icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
           @metadata.icons.push icon
         end
+      end
+
+      if mask_icon_link = @html.at_css("link[rel=mask-icon]")
+        icon = { "purpose" => "mask-icon" }
+        icon["src"] = mask_icon_link.attributes["href"].value rescue nil
+        return if icon["src"].to_s.empty?
+        icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
+        icon["color"] = mask_icon_link.attributes["color"].value rescue nil
+        @metadata.icons.push icon
       end
 
       @metadata.from_html.push "icons" unless @metadata.icons.empty?

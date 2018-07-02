@@ -170,6 +170,10 @@ RSpec.describe Manifique::WebClient do
         png_icons = subject.icons.select{|i| i["type"] == "image/png"}
         expect(png_icons.length).to eq(5)
         expect(subject.icons.find{|i| i["sizes"] == "512x512"}["src"]).to eq( "/application_icon_x512.png")
+        mask_icon = subject.icons.find{|i| i["purpose"] == "mask-icon"}
+        expect(mask_icon["color"]).to eq("#2b90d9")
+        expect(mask_icon["type"]).to eq("image/svg")
+        expect(mask_icon["sizes"]).to be_nil
       end
 
       it "knows which properties were loaded from HTML" do
