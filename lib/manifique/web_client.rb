@@ -16,6 +16,7 @@ module Manifique
 
     def fetch_metadata
       fetch_website
+
       if manifest = fetch_web_manifest
         @metadata.load_from_web_manifest(manifest)
       else
@@ -51,6 +52,7 @@ module Manifique
       parse_title_from_html
       parse_meta_elements_from_html
       parse_display_mode_from_html
+      parse_icons_from_html
     end
 
     def parse_title_from_html
@@ -87,6 +89,27 @@ module Manifique
       if el = @html.at_css("meta[name=#{name}]") and !el.attributes["content"].value.empty?
         el.attributes["content"].value
       end
+    end
+
+    def parse_icons_from_html
+      icon_links = @html.css("link[rel=icon]")
+      if icon_links.any?
+        icon_links.each do |link|
+          icon = {}
+          icon["src"] = link.attributes["href"].value rescue nil
+          next if icon["src"].to_s.empty?
+          icon["sizes"] = link.attributes["sizes"].value rescue nil
+          icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
+          @metadata.icons.push icon
+        end
+      end
+
+      @metadata.from_html.push "icons" unless @metadata.icons.empty?
+    end
+
+    def get_icon_type(src)
+      extension = src.match(/\.([a-zA-Z]+)$/)[1]
+      return "image/#{extension}"
     end
 
     def do_get_request(url)

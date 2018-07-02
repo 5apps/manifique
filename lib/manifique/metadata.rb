@@ -10,15 +10,16 @@ module Manifique
       self.url = data[:url]
       self.from_web_manifest = []
       self.from_html = []
+      self.icons = []
     end
 
     def load_from_web_manifest(manifest)
-      [:name, :short_name, :description, :icons,
-       :theme_color, :background_color, :display,
-       :start_url, :scope, :share_target].map(&:to_s).each do |prop|
+      [ :name, :short_name, :description, :icons,
+        :theme_color, :background_color, :display,
+        :start_url, :scope, :share_target ].map(&:to_s).each do |prop|
          self.send("#{prop}=", manifest[prop]) if manifest[prop]
          self.from_web_manifest.push(prop)
-       end
+      end
     end
 
     def to_json

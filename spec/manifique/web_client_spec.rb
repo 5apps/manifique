@@ -166,10 +166,14 @@ RSpec.describe Manifique::WebClient do
         expect(subject.description).to eq("A friendly place for tooting")
         expect(subject.theme_color).to eq("#282c37")
         expect(subject.display).to eq("standalone")
+
+        png_icons = subject.icons.select{|i| i["type"] == "image/png"}
+        expect(png_icons.length).to eq(5)
+        expect(subject.icons.find{|i| i["sizes"] == "512x512"}["src"]).to eq( "/application_icon_x512.png")
       end
 
       it "knows which properties were loaded from HTML" do
-        %w{ name description theme_color display }.each do |property|
+        %w{ name description theme_color display icons }.each do |property|
           expect(subject.from_html).to include(property)
         end
       end
