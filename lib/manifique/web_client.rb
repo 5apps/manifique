@@ -92,6 +92,12 @@ module Manifique
     end
 
     def parse_icons_from_html
+      parse_link_icons_from_html
+      parse_apple_touch_icons_from_html
+      parse_mask_icon_from_html
+    end
+
+    def parse_link_icons_from_html
       if icon_links = @html.css("link[rel=icon]")
         icon_links.each do |link|
           icon = {}
@@ -100,9 +106,26 @@ module Manifique
           icon["sizes"] = link.attributes["sizes"].value rescue nil
           icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
           @metadata.icons.push icon
+          @metadata.from_html.add "icons"
         end
       end
+    end
 
+    def parse_apple_touch_icons_from_html
+      if icon_links = @html.css("link[rel=apple-touch-icon]")
+        icon_links.each do |link|
+          icon = { "purpose" => "apple-touch-icon" }
+          icon["src"] = link.attributes["href"].value rescue nil
+          next if icon["src"].to_s.empty?
+          icon["sizes"] = link.attributes["sizes"].value rescue nil
+          icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
+          @metadata.icons.push icon
+          @metadata.from_html.add "icons"
+        end
+      end
+    end
+
+    def parse_mask_icon_from_html
       if mask_icon_link = @html.at_css("link[rel=mask-icon]")
         icon = { "purpose" => "mask-icon" }
         icon["src"] = mask_icon_link.attributes["href"].value rescue nil
@@ -110,6 +133,7 @@ module Manifique
         icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
         icon["color"] = mask_icon_link.attributes["color"].value rescue nil
         @metadata.icons.push icon
+        @metadata.from_html.add "icons"
       end
     end
 

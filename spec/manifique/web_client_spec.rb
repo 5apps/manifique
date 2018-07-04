@@ -160,16 +160,31 @@ RSpec.describe Manifique::WebClient do
 
       subject { web_client.fetch_metadata }
 
-      it "returns a metadata object with the HTML properties loaded" do
+      it "returns a metadata object" do
         expect(subject).to be_kind_of(Manifique::Metadata)
+      end
+
+      it "loads properties from parsed HTML" do
         expect(subject.name).to eq("kosmos.social")
         expect(subject.description).to eq("A friendly place for tooting")
         expect(subject.theme_color).to eq("#282c37")
         expect(subject.display).to eq("standalone")
+      end
 
+      it "loads icons from link[rel=icon] elements" do
         png_icons = subject.icons.select{|i| i["type"] == "image/png"}
-        expect(png_icons.length).to eq(5)
+        expect(png_icons.length).to eq(7)
         expect(subject.icons.find{|i| i["sizes"] == "512x512"}["src"]).to eq( "/application_icon_x512.png")
+      end
+
+      it "loads icons from link[rel=apple-touch-icon] elements" do
+        apple_touch_icons = subject.icons.select{|i| i["purpose"] == "apple-touch-icon"}
+        expect(apple_touch_icons.length).to eq(2)
+        expect(apple_touch_icons.first["type"]).to eq("image/png")
+        expect(apple_touch_icons.first["sizes"]).to eq("180x180")
+      end
+
+      it "loads mask icons from link[rel=mask-icon] elements" do
         mask_icon = subject.icons.find{|i| i["purpose"] == "mask-icon"}
         expect(mask_icon["color"]).to eq("#2b90d9")
         expect(mask_icon["type"]).to eq("image/svg")
