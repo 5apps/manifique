@@ -60,7 +60,7 @@ module Manifique
 
       if title = @html.at_css("title") and !title.text.empty?
         @metadata.name = title.text
-        @metadata.from_html.push "name"
+        @metadata.from_html.add "name"
       end
     end
 
@@ -72,7 +72,7 @@ module Manifique
         next if @metadata.send("#{prop}")
         if value = get_meta_element_value(name)
           @metadata.send "#{prop}=", value
-          @metadata.from_html.push prop.to_s
+          @metadata.from_html.add prop.to_s
         end
       end
     end
@@ -81,7 +81,7 @@ module Manifique
       return if @metadata.display
       if get_meta_element_value("apple-mobile-web-app-capable") == "yes"
         @metadata.display = "standalone"
-        @metadata.from_html.push "display"
+        @metadata.from_html.add "display"
       end
     end
 
@@ -111,8 +111,6 @@ module Manifique
         icon["color"] = mask_icon_link.attributes["color"].value rescue nil
         @metadata.icons.push icon
       end
-
-      @metadata.from_html.push "icons" unless @metadata.icons.empty?
     end
 
     def get_icon_type(src)

@@ -8,8 +8,8 @@ module Manifique
 
     def initialize(data={})
       self.url = data[:url]
-      self.from_web_manifest = []
-      self.from_html = []
+      self.from_web_manifest = Set.new
+      self.from_html = Set.new
       self.icons = []
     end
 
@@ -18,7 +18,7 @@ module Manifique
         :theme_color, :background_color, :display,
         :start_url, :scope, :share_target ].map(&:to_s).each do |prop|
          self.send("#{prop}=", manifest[prop]) if manifest[prop]
-         self.from_web_manifest.push(prop)
+         self.from_web_manifest.add(prop)
       end
     end
 
