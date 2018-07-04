@@ -1,9 +1,9 @@
 require 'ostruct'
+require 'json'
 require 'faraday'
 require 'faraday_middleware'
 require "nokogiri"
 require 'manifique/metadata'
-require 'pry'
 
 module Manifique
   class WebClient
@@ -43,7 +43,7 @@ module Manifique
 
       res = do_get_request manifest_url
 
-      JSON.parse(res.body) rescue false
+      JSON.parse(res.body)
     end
 
     private
