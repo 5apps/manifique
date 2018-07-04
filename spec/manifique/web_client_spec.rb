@@ -60,7 +60,7 @@ RSpec.describe Manifique::WebClient do
           "Content-Type": "text/html; charset=utf-8"
         })
 
-      web_client.fetch_website
+      web_client.send(:fetch_website)
     end
 
     it "instantiates an HTML parser object" do
@@ -86,11 +86,11 @@ RSpec.describe Manifique::WebClient do
             "Content-Type": "application/json; charset=utf-8"
           })
 
-        web_client.fetch_website
+        web_client.send(:fetch_website)
       end
 
       subject do
-        web_client.fetch_web_manifest
+        web_client.send(:fetch_web_manifest)
       end
 
       it "returns the fetched manifest as a hash" do
@@ -107,11 +107,11 @@ RSpec.describe Manifique::WebClient do
             "Content-Type": "text/html; charset=utf-8"
           })
 
-        web_client.fetch_website
+        web_client.send(:fetch_website)
       end
 
       subject do
-        web_client.fetch_web_manifest
+        web_client.send(:fetch_web_manifest)
       end
 
       it "returns false" do

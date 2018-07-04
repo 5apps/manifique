@@ -26,6 +26,8 @@ module Manifique
       @metadata
     end
 
+    private
+
     def fetch_website
       res = do_get_request @url
       @html = Nokogiri::HTML(res.body)
@@ -45,8 +47,6 @@ module Manifique
 
       JSON.parse(res.body)
     end
-
-    private
 
     def parse_metadata_from_html
       parse_title_from_html
