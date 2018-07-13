@@ -1,3 +1,4 @@
+require "pry"
 module Manifique
   class Metadata
 
@@ -22,8 +23,55 @@ module Manifique
       end
     end
 
+    def select_icon(options={})
+      if options[:type].nil? && options[:sizes].nil? && options[:purpose].nil?
+        raise ArgumentError, "Tell me what to do!"
+      end
+
+      results = icons
+
+      if options[:purpose]
+        results.reject! { |r| r["purpose"] != options[:purpose] }
+      else
+        # Do not return special icons by default
+        results.reject! { |r| r["purpose"] }
+      end
+
+      if options[:type]
+        results.reject! { |r| r["type"] != options[:type] }
+      end
+
+      if options[:sizes]
+        results.reject! { |r| r["sizes"].nil? }
+        results.sort!   { |a, b| sizes_to_i(b["sizes"]) <=> sizes_to_i(a["sizes"]) }
+
+        if icon = select_exact_size(results, options[:sizes])
+          return icon
+        else
+          return select_best_size(results, options[:sizes])
+        end
+      end
+
+      results.first
+    end
+
     def to_json
       # TODO serialize into JSON
+    end
+
+    private
+
+    def sizes_to_i(str)
+      str.match(/(\d+)x/)[1].to_i
+    end
+
+    def select_exact_size(results, sizes)
+      results.select{|r| r["sizes"] == sizes}[0]
+    end
+
+    def select_best_size(results, sizes)
+      results.reject! { |r| sizes_to_i(r["sizes"]) < sizes_to_i(sizes) }
+      results.last
     end
 
   end

@@ -38,4 +38,68 @@ RSpec.describe Manifique::Metadata do
     end
   end
 
+  describe "#select_icon" do
+    let(:metadata) { Manifique::Metadata.new }
+
+    before do
+      metadata.icons = icon_fixtures
+    end
+
+    it "expects at least one filter option" do
+      expect { metadata.select_icon }.to raise_error(ArgumentError)
+    end
+
+    describe "by purpose" do
+      it "returns the correct icon" do
+        icon = metadata.select_icon(purpose: "mask-icon")
+        expect(icon["src"]).to eq("/mask-icon.svg")
+      end
+    end
+
+    describe "by type" do
+      it "returns the largest image of the type" do
+        icon = metadata.select_icon(type: "image/png")
+        expect(icon["sizes"]).to eq("512x512")
+      end
+    end
+
+    describe "by size" do
+      it "returns the exact size when available" do
+        icon = metadata.select_icon(sizes: "256x256")
+        expect(icon["sizes"]).to eq("256x256")
+      end
+
+      it "returns the icon with the closest (but larger) size" do
+        icon = metadata.select_icon(sizes: "180x180")
+        expect(icon["sizes"]).to eq("192x192")
+      end
+    end
+
+    describe "special purpose by size" do
+      it "returns the exact size when available" do
+        icon = metadata.select_icon(purpose: "apple-touch-icon", sizes: "180x180")
+        expect(icon["sizes"]).to eq("180x180")
+      end
+
+      it "returns the icon with the closest (but larger) size" do
+        icon = metadata.select_icon(purpose: "apple-touch-icon", sizes: "44x44")
+        expect(icon["sizes"]).to eq("57x57")
+      end
+    end
+  end
+
+end
+
+def icon_fixtures
+  [
+    {"src"=>"/favicon.ico", "sizes"=>nil, "type"=>"image/x-icon"},
+    {"src"=>"/application_icon_x512.png", "sizes"=>"512x512", "type"=>"image/png"},
+    {"src"=>"/application_icon_x256.png", "sizes"=>"256x256", "type"=>"image/png"},
+    {"src"=>"/application_icon_x228.png", "sizes"=>"228x228", "type"=>"image/png"},
+    {"src"=>"/application_icon_x196.png", "sizes"=>"196x196", "type"=>"image/png"},
+    {"src"=>"/application_icon_x192.png", "sizes"=>"192x192", "type"=>"image/png"},
+    {"purpose"=>"apple-touch-icon", "src"=>"/apple-touch-icon.png", "sizes"=>"180x180", "type"=>"image/png" },
+    {"purpose"=>"apple-touch-icon", "src"=>"/apple-touch-icon-57px.png", "sizes"=>"57x57", "type"=>"image/png"},
+    {"purpose"=>"mask-icon", "src"=>"/mask-icon.svg", "type"=>"image/svg", "color"=>"#2b90d9"}
+  ]
 end
