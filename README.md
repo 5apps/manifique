@@ -8,7 +8,7 @@ back to parsing HTML if necessary.
 
 Add this line to your application's Gemfile:
 
-```gem 'manifique'```
+    gem 'manifique'
 
 And then execute:
 
@@ -30,8 +30,24 @@ agent = Manifique::Agent.new(url: "https://kosmos.social")
 Now you can fetch its metadata:
 
 ```ruby
-puts agent.fetch_metadata
+metadata = agent.fetch_metadata
 ```
+
+### Selecting icons
+
+Let's select an icon that we like:
+
+```ruby
+icon = metadata.select_icon(type: "image/png", sizes: "96x96")
+```
+
+Or maybe just iOS icons? They're pretty convenient for postprocessing after all.
+
+```ruby
+icon = metadata.select_icon(purpose: "apple-touch-icon", sizes: "180x180")
+```
+
+_TODO check out the docs for options and behavior._
 
 ## Development
 
