@@ -1,4 +1,3 @@
-require 'ostruct'
 require 'json'
 require 'faraday'
 require 'faraday_middleware'
