@@ -147,6 +147,20 @@ RSpec.describe Manifique::WebClient do
       it "knows which properties were loaded from the web app manifest" do
         expect(subject.from_web_manifest.length).to eq(10)
       end
+
+      it "loads iOS icons from HTML" do
+        apple_touch_icons = subject.icons.select{|i| i["purpose"] == "apple-touch-icon"}
+        expect(apple_touch_icons.length).to eq(1)
+        expect(apple_touch_icons.first["type"]).to eq("image/png")
+        expect(apple_touch_icons.first["sizes"]).to eq("180x180")
+      end
+
+      it "loads SVG mask icons from HTML" do
+        mask_icon = subject.icons.find{|i| i["purpose"] == "mask-icon"}
+        expect(mask_icon["color"]).to eq("#2b90d9")
+        expect(mask_icon["type"]).to eq("image/svg")
+        expect(mask_icon["sizes"]).to be_nil
+      end
     end
 
     context "no web app manifest present" do

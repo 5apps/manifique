@@ -18,6 +18,8 @@ module Manifique
 
       if manifest = fetch_web_manifest
         @metadata.load_from_web_manifest(manifest)
+        parse_apple_touch_icons_from_html
+        parse_mask_icon_from_html
       else
         parse_metadata_from_html
       end
