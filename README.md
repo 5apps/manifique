@@ -78,6 +78,8 @@ The gem is available as open source under the terms of the [AGPL
 TL;DR: if you use this gem in a project, the entire project's source has to be
 made available as open source.
 
+_TODO add information about dual/commercial licensing_
+
 ## Code of Conduct
 
 Everyone interacting in this project’s codebase, issue trackers, and chat
