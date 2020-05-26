@@ -211,6 +211,38 @@ RSpec.describe Manifique::WebClient do
         end
       end
     end
+
+    context "with data URL icons" do
+      before do
+        index_html = File.read(File.join(__dir__, "..", "fixtures", "kommit.html"));
+        stub_request(:get, "https://kosmos.social/").
+          to_return(body: index_html, status: 200, headers: {
+            "Content-Type": "text/html; charset=utf-8"
+          })
+      end
+
+      subject { web_client.fetch_metadata }
+
+      it "returns a metadata object" do
+        expect(subject).to be_kind_of(Manifique::Metadata)
+      end
+
+      it "loads properties from parsed HTML" do
+        expect(subject.name).to eq("Kommit")
+        expect(subject.description).to eq("Augment your memory")
+      end
+
+      it "ignores data URL icons" do
+        expect(subject.icons.length).to eq(1)
+      end
+
+      it "loads icons from link[rel=apple-touch-icon] elements" do
+        apple_touch_icons = subject.icons.select{|i| i["purpose"] == "apple-touch-icon"}
+        expect(apple_touch_icons.length).to eq(1)
+        expect(apple_touch_icons.first["type"]).to eq("image/jpg")
+        expect(apple_touch_icons.first["sizes"]).to be_nil
+      end
+    end
   end
 
 end

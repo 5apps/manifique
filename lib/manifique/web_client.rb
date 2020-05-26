@@ -103,7 +103,7 @@ module Manifique
         icon_links.each do |link|
           icon = {}
           icon["src"] = link.attributes["href"].value rescue nil
-          next if icon["src"].to_s.empty?
+          next unless is_adequate_src(icon["src"])
           icon["sizes"] = link.attributes["sizes"].value rescue nil
           icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
           @metadata.icons.push icon
@@ -117,7 +117,7 @@ module Manifique
         icon_links.each do |link|
           icon = { "purpose" => "apple-touch-icon" }
           icon["src"] = link.attributes["href"].value rescue nil
-          next if icon["src"].to_s.empty?
+          next unless is_adequate_src(icon["src"])
           icon["sizes"] = link.attributes["sizes"].value rescue nil
           icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
           @metadata.icons.push icon
@@ -130,12 +130,20 @@ module Manifique
       if mask_icon_link = @html.at_css("link[rel=mask-icon]")
         icon = { "purpose" => "mask-icon" }
         icon["src"] = mask_icon_link.attributes["href"].value rescue nil
-        return if icon["src"].to_s.empty?
+        return unless is_adequate_src(icon["src"])
         icon["type"]  = link.attributes["type"].value rescue get_icon_type(icon["src"])
         icon["color"] = mask_icon_link.attributes["color"].value rescue nil
         @metadata.icons.push icon
         @metadata.from_html.add "icons"
       end
+    end
+
+    def is_data_url?(src)
+      !!src.match(/^data:/)
+    end
+
+    def is_adequate_src(src)
+      !src.to_s.empty? && !is_data_url?(src)
     end
 
     def get_icon_type(src)
@@ -161,6 +169,5 @@ module Manifique
     rescue
       false
     end
-
   end
 end
