@@ -84,4 +84,4 @@ _TODO add information about dual/commercial licensing_
 
 Everyone interacting in this project’s codebase, issue trackers, and chat
 rooms is expected to follow the [code of
-conduct](https://github.com/skddc/manifique/blob/master/CODE_OF_CONDUCT.md).
+conduct](https://github.com/5apps/manifique/blob/master/CODE_OF_CONDUCT.md).
