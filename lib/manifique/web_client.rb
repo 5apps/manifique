@@ -143,7 +143,7 @@ module Manifique
     end
 
     def is_adequate_src(src)
-      !src.nil? && !is_data_url?(src)
+      !src.to_s.empty? && !is_data_url?(src)
     end
 
     def get_icon_type(src)
