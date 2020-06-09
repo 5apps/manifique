@@ -13,6 +13,13 @@ RSpec.describe Manifique::WebClient do
 
       stub_request(:get, "http://example.com/200_empty").
         to_return(body: "", status: 200, headers: {})
+
+      stub_request(:get, "http://example.com/failed").
+        to_raise(Faraday::ConnectionFailed)
+      stub_request(:get, "http://example.com/timeout").
+        to_raise(Faraday::TimeoutError)
+      stub_request(:get, "http://example.com/ssl_error").
+        to_raise(Faraday::SSLError)
     end
 
     context "unsuccessful requests" do
@@ -22,7 +29,12 @@ RSpec.describe Manifique::WebClient do
         it "raises an exception" do
           expect {
             client.send(:do_get_request, 'http://example.com/404')
-          }.to raise_error("Could not fetch http://example.com/404 successfully (404)")
+          }.to raise_error { |error|
+            expect(error).to be_a(Manifique::Error)
+            expect(error.message).to eq("Failed with HTTP status 404")
+            expect(error.type).to eq("http_404")
+            expect(error.url).to eq("http://example.com/404")
+          }
         end
       end
 
@@ -32,7 +44,39 @@ RSpec.describe Manifique::WebClient do
         it "raises an exception" do
           expect {
             client.send(:do_get_request, 'http://example.com/500')
-          }.to raise_error("Could not fetch http://example.com/500 successfully (500)")
+          }.to raise_error { |error|
+            expect(error).to be_a(Manifique::Error)
+            expect(error.message).to eq("Failed with HTTP status 500")
+            expect(error.type).to eq("http_500")
+            expect(error.url).to eq("http://example.com/500")
+          }
+        end
+      end
+
+      describe "failed connections" do
+        let(:client) { Manifique::WebClient.new }
+
+        it "raises an exception on connection failures" do
+          expect {
+            client.send(:do_get_request, 'http://example.com/failed')
+          }.to raise_error { |error|
+            expect(error).to be_a(Manifique::Error)
+            expect(error.message).to eq("Failed to connect")
+            expect(error.type).to eq("connection_failed")
+            expect(error.url).to eq("http://example.com/failed")
+          }
+        end
+
+        it "raises an exception on timouts" do
+          expect {
+            client.send(:do_get_request, 'http://example.com/timeout')
+          }.to raise_error("Failed to connect")
+        end
+
+        it "raises an exception on SSL errors" do
+          expect {
+            client.send(:do_get_request, 'http://example.com/ssl_error')
+          }.to raise_error("Failed to connect")
         end
       end
     end
