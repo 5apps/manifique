@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/5apps/manifique.png?branch=master)](http://travis-ci.org/5apps/manifique)
+
 # Manifique
 
 Manifique fetches metadata of Web applications, like e.g. name, description,
