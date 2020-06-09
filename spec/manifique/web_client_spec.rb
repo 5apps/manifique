@@ -67,7 +67,7 @@ RSpec.describe Manifique::WebClient do
           }
         end
 
-        it "raises an exception on timouts" do
+        it "raises an exception on timeouts" do
           expect {
             client.send(:do_get_request, 'http://example.com/timeout')
           }.to raise_error("Failed to connect")
