@@ -1,8 +1,9 @@
 require 'json'
 require 'faraday'
 require 'faraday_middleware'
-require "nokogiri"
+require 'nokogiri'
 require 'manifique/metadata'
+require 'manifique/errors'
 
 module Manifique
   class WebClient
@@ -160,8 +161,10 @@ module Manifique
       if res.status < 400
         res
       else
-        raise "Could not fetch #{url} successfully (#{res.status})"
+        raise Manifique::Error.new "Failed with HTTP status #{res.status}", "http_#{res.status}", url
       end
+    rescue Faraday::ConnectionFailed, Faraday::TimeoutError, Faraday::SSLError => e
+      raise Manifique::Error.new "Failed to connect", "connection_failed", url
     end
 
     def discover_web_manifest_url(html)
