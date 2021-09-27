@@ -32,5 +32,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "faraday", "~> 0.9.2", "< 0.10.0"
   spec.add_runtime_dependency "faraday_middleware", "~> 0.12.2"
-  spec.add_runtime_dependency "nokogiri", "~> 1.10.4"
+  spec.add_runtime_dependency "nokogiri", ">= 1.10.4", "< 1.13.0"
 end
