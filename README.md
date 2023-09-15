@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/5apps/manifique.png?branch=master)](http://travis-ci.org/5apps/manifique)
+[![Build Status](https://drone.kosmos.org/api/badges/5apps/manifique/status.svg)](https://drone.kosmos.org/5apps/manifique)
 
 # Manifique
 
