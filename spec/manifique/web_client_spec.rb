@@ -189,7 +189,7 @@ RSpec.describe Manifique::WebClient do
       end
 
       it "knows which properties were loaded from the web app manifest" do
-        expect(subject.from_web_manifest.length).to eq(10)
+        expect(subject.from_web_manifest.length).to eq(9)
       end
 
       it "loads iOS icons from HTML" do
