@@ -32,9 +32,6 @@ module Manifique
 
       if options[:purpose]
         results.reject! { |r| r["purpose"] != options[:purpose] }
-      else
-        # Do not return special icons by default
-        results.reject! { |r| r["purpose"] }
       end
 
       if options[:type]
