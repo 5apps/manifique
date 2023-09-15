@@ -1,6 +1,6 @@
 require 'json'
 require 'faraday'
-require 'faraday_middleware'
+require 'faraday/follow_redirects'
 require 'nokogiri'
 require 'manifique/metadata'
 require 'manifique/errors'
@@ -153,9 +153,9 @@ module Manifique
     end
 
     def do_get_request(url)
-      conn = Faraday.new do |b|
-        b.use FaradayMiddleware::FollowRedirects
-        b.adapter :net_http
+      conn = Faraday.new do |faraday|
+        faraday.response :follow_redirects
+        faraday.adapter Faraday.default_adapter
       end
       res = conn.get url
       if res.status < 400
