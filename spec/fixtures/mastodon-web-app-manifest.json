@@ -9,7 +9,6 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#282c37",
   "background_color": "#191b22",
   "display": "standalone",
   "start_url": "/web/timelines/home",

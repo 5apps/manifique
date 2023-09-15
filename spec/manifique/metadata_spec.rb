@@ -4,13 +4,13 @@ require "manifique/metadata"
 RSpec.describe Manifique::Metadata do
 
   describe "#initialize" do
-    it "sets the URL when given" do
+    it "sets the URL" do
       metadata = Manifique::Metadata.new(url: "https://5apps.com")
       expect(metadata.url).to eq("https://5apps.com")
     end
   end
 
-  describe "#manifest=" do
+  describe "#load_from_web_manifest" do
     let(:metadata) { Manifique::Metadata.new }
     let(:manifest) { JSON.parse(File.read(File.join(__dir__, "..", "fixtures", "mastodon-web-app-manifest.json"))) }
 
@@ -22,7 +22,6 @@ RSpec.describe Manifique::Metadata do
       expect(metadata.name).to eq("kosmos.social")
       expect(metadata.short_name).to eq("kosmos.social")
       expect(metadata.description).to eq("A friendly place for tooting. Run by the Kosmos peeps.")
-      expect(metadata.theme_color).to eq("#282c37")
       expect(metadata.background_color).to eq("#191b22")
       expect(metadata.display).to eq("standalone")
       expect(metadata.start_url).to eq("/web/timelines/home")
@@ -35,6 +34,14 @@ RSpec.describe Manifique::Metadata do
           "type"=>"image/png"
         }
       ])
+    end
+
+    it "stores the available property names in the from_web_manifest accessor" do
+      expect((metadata.from_web_manifest & [
+        "name", "short_name", "description", "icons", "background_color",
+        "display", "start_url", "scope", "share_target"
+      ]).length).to eq(9)
+      expect(metadata.from_web_manifest).not_to include("theme_color")
     end
   end
 
