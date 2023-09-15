@@ -77,8 +77,8 @@ RSpec.describe Manifique::Metadata do
       end
 
       it "returns the icon with the closest (but larger) size" do
-        icon = metadata.select_icon(sizes: "180x180")
-        expect(icon["sizes"]).to eq("192x192")
+        icon = metadata.select_icon(sizes: "170x170")
+        expect(icon["sizes"]).to eq("180x180")
       end
     end
 
