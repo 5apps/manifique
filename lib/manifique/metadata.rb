@@ -28,7 +28,7 @@ module Manifique
         raise ArgumentError, "Tell me what to do!"
       end
 
-      results = icons
+      results = icons.dup
 
       if options[:purpose]
         results.reject! { |r| r["purpose"] != options[:purpose] }
