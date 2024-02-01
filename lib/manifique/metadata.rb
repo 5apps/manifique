@@ -17,7 +17,7 @@ module Manifique
       [ :name, :short_name, :description, :icons,
         :theme_color, :background_color, :display,
         :start_url, :scope, :share_target ].map(&:to_s).each do |prop|
-         next unless manifest[prop]
+         next unless manifest[prop] && !manifest[prop].to_s.empty?
          self.send("#{prop}=", manifest[prop])
          self.from_web_manifest.add(prop)
       end
