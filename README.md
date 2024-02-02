@@ -49,8 +49,6 @@ Or maybe just iOS icons? They're pretty convenient for postprocessing after all.
 icon = metadata.select_icon(purpose: "apple-touch-icon", sizes: "180x180")
 ```
 
-_TODO check out the docs for options and behavior._
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run
@@ -68,12 +66,13 @@ git commits and tags, and push the `.gem` file to
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at
-https://github.com/5apps/manifique. Please add specs for any changes or
-additions.
+Bug reports and pull requests are welcome on the
+[Kosmos Gitea](https://gitea.kosmos.org/5apps/manifique) or on
+[GitHub](https://github.com/5apps/manifique). Please add specs for any changes
+or additions.
 
 ## Code of Conduct
 
 Everyone interacting in this project’s codebase, issue trackers, and chat
 rooms is expected to follow the [code of
-conduct](https://github.com/5apps/manifique/blob/master/CODE_OF_CONDUCT.md).
+conduct](https://gitea.kosmos.org/5apps/manifique/src/branch/master/CODE_OF_CONDUCT.md).

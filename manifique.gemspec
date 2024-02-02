@@ -3,15 +3,18 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "manifique/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "manifique"
-  spec.version       = Manifique::VERSION
-  spec.authors       = ["Râu Cao"]
-  spec.email         = ["raucao@kosmos.org"]
-
-  spec.summary       = %q{Fetch metadata and icons of Web applications}
-  spec.description   = %q{Fetch metadata and icons of Web applications}
-  spec.homepage      = "https://gitea.kosmos.org/5apps/manifique"
-  spec.license       = "MIT"
+  spec.name        = "manifique"
+  spec.version     = Manifique::VERSION
+  spec.licenses    = ["MIT"]
+  spec.authors     = ["Râu Cao"]
+  spec.email       = ["raucao@kosmos.org"]
+  spec.summary     = "Fetch metadata and icons of Web applications"
+  spec.description = "Fetch and process metadata and icons of Web applications from Web App Manifest files, with fallbacks to HTML elements/attributes}"
+  spec.homepage    = "https://gitea.kosmos.org/5apps/manifique"
+  spec.metadata    = {
+    "bug_tracker_uri"   => "https://gitea.kosmos.org/5apps/manifique/issues",
+    "source_code_uri"   => "https://gitea.kosmos.org/5apps/manifique"
+  }
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
