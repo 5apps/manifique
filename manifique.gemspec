@@ -25,13 +25,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 2.3.7"
-  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "bundler", "~> 2.5.5"
+  spec.add_development_dependency "rake", "~> 13.1.0"
   spec.add_development_dependency "rspec", "~> 3.12"
-  spec.add_development_dependency "webmock", "~> 3.4.2"
+  spec.add_development_dependency "webmock", "~> 3.19.1"
   spec.add_development_dependency "pry", "~> 0.14.2"
 
-  spec.add_runtime_dependency "faraday", "~> 2.7.11"
+  spec.add_runtime_dependency "faraday", "~> 2.9.0"
   spec.add_runtime_dependency "faraday-follow_redirects", "0.3.0"
-  spec.add_runtime_dependency "nokogiri", "~> 1.15.4"
+  spec.add_runtime_dependency "nokogiri", "~> 1.16.0"
 end
