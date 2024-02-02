@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors     = ["Râu Cao"]
   spec.email       = ["raucao@kosmos.org"]
   spec.summary     = "Fetch metadata and icons of Web applications"
-  spec.description = "Fetch and process metadata and icons of Web applications from Web App Manifest files, with fallbacks to HTML elements/attributes}"
+  spec.description = "Fetch and process metadata and icons of Web applications from Web App Manifest files, with fallbacks to HTML elements/attributes"
   spec.homepage    = "https://gitea.kosmos.org/5apps/manifique"
   spec.metadata    = {
     "bug_tracker_uri"   => "https://gitea.kosmos.org/5apps/manifique/issues",
@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+  spec.required_ruby_version = '>= 3.1.4'
 
   spec.add_development_dependency "bundler", "~> 2.5.5"
   spec.add_development_dependency "rake", "~> 13.1.0"
