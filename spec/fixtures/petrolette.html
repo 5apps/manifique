@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <title>Pétrolette</title>
+
+    <meta charset="UTF-8">
+
+    <!-- <link rel="preload" as="script" href="jquery/jquery.min.js"> -->
+    <link rel="preload" as="script" href="jquery-ui/jquery-ui.min.js">
+    <!-- <link rel="preload" as="font" href="static/font/Lobster_1.3.otf"> -->
+    <link rel="preload" as="style" href="static/css/fontello.css" />
+    <link rel="preload" as="style" href="static/css/petrolette.css" />
+    <!-- <link rel="preload" as="image" href="static/images/loading.gif"> -->
+
+    <script>
+      /*
+        @licstart  The following is the entire license notice for the
+        JavaScript code in this page.
+
+        Copyright (C) 2013 yPhil
+
+        The JavaScript code in this page is free software: you can
+        redistribute it and/or modify it under the terms of the GNU
+        General Public License (GNU GPL) as published by the Free Software
+        Foundation, either version 3 of the License, or (at your option)
+        any later version.  The code is distributed WITHOUT ANY WARRANTY;
+        without even the implied warranty of MERCHANTABILITY or FITNESS
+        FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+        As additional permission under GNU GPL version 3 section 7, you
+        may distribute non-source (e.g., minimized or compacted) forms of
+        that code without the copy of the GNU GPL normally required by
+        section 4, provided you include this license notice and a URL
+        through which recipients can access the Corresponding Source.
+
+        @licend  The above is the entire license notice
+        for the JavaScript code in this page.
+      */
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:title" content="Pétrolette">
+    <meta property="og:description" content="The news reader / home page that doesn't (want to) know you.">
+    <meta name="twitter:creator" content="@yassinphilip">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="description" content="The news reader / home page that doesn't (want to) know you." />
+    <meta property="og:image" content="https://yphil.bitbucket.io/images/petrolette.png">
+    <meta property="og:url" content="https://petrolette.space">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="static/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="static/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="static/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="msapplication-config" content="static/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="google-site-verification" content="gZjIQjkGXwYltleCVHxODL0EDW5TfKg9H5s1HE0q0aQ" />
+
+    <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
+
+    <link id="theme" rel="stylesheet" href="static/css/themes/night.css">
+    
+    <link rel="stylesheet" href="static/css/fontello.css">
+    <link rel="stylesheet" href="fancybox/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="introjs/minified/introjs.min.css" />
+    <link rel="stylesheet" href="responsively-lazy/responsivelyLazy.min.css" />
+
+    <link rel="stylesheet"
+          href="static/css/petrolette.css"
+          media="print" onload="this.media='all'" />
+
+    <noscript>
+      <link rel="stylesheet"
+            href="static/css/petrolette.css" />
+    </noscript>
+
+    <script src="jquery/jquery.js"></script>
+
+    <script src="jquery-ui/jquery-ui.min.js"></script>
+
+    <script src="introjs/minified/intro.min.js"></script>
+    <script src="fancybox/jquery.fancybox.min.js"></script>
+    <script src="rs/remotestorage.js"></script>
+    <script src="rs-widget/widget.js"></script>
+    <script src="dompurify/purify.min.js"></script>
+    <!-- <script src="mousetrap/mousetrap.min.js"></script> -->
+    <script src="mousetrap/mousetrap.min.js"></script>
+    
+    <script src="static/js/PTL.main.js"></script>
+    <script src="static/js/PTL.prefs.js"></script>
+    <script src="static/js/PTL.i18n.js"></script>
+
+  </head>
+
+  <body>
+
+    <div id="overlay" class="hidden"></div>
+
+    <div id="nagBar" style="display:none">
+      
+      <div id="nagOne">🔒 
+        <span id="nagText" class="translate"></span> 🙂
+      </div>
+
+      <div id="nagTwo">
+
+        <button id="nagOk" class="translate htmlButtonOnly"
+                data-content="OK"
+                data-title="OK"
+                title="OK">
+          OK
+        </button>
+        
+      </div>
+      
+    </div>
+    
+    <nav id="top-menu" class="menu hidden">
+
+      <div class="topNav" id="topNav">
+
+        <div id="menuButton"
+             class="menuBarItem menuBarButton translate jsEnabledOnly navLeft"
+             title="Main menu"
+             data-title="Main menu">
+          <i class="icon-menu topMenuIcon"></i>
+        </div>
+
+        <div id="newFeedButton"
+             class="menuBarItem menuBarButton newFeedButton jsEnabledOnly navLeft">
+          <i class="icon-plus topMenuIcon"></i>
+        </div>
+
+        <div id="ptlSearch" class="menuBarItem navLeft">
+          <input
+            class="translate"
+            type="text"
+            placeholder="Search in feeds"
+            data-placeholder="Search in feeds">
+          <i></i>
+        </div>
+
+        <div class="menuBarItem navCenter">
+        </div>
+
+        <div id="logoTitle"
+             class="navRight">
+          <div class="logoTitle">
+            Pétrolette
+          </div>
+          <div class="logoType translate"
+               title="About Pétrolette"
+               data-title="About Pétrolette"
+               data-version="1.7.6"
+               data-favratversion="0.4.8"
+               data-feedratversion="0.4.12">
+            <i class="icon-petrolette"></i>
+          </div>
+        </div>
+
+      </div>
+    </nav>
+
+    <nav id="sideMenu" class="menu hidden">
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate"
+                data-content="Language">
+            Language
+          </span>
+        </span>
+      </div>
+      <fieldset class="menuForm flexBox">
+        <select id="language"
+                class="grow translate"
+                name="language"
+                data-title="Language"
+                title="Language">
+          <option id="optionEnglish"
+                  class="translate"
+                  label="English"
+                  data-content="English"
+                  selected="selected"
+                  value="en"></option>
+          <option id="optionFrench"
+                  class="translate"
+                  label="Français"
+                  data-content="Français"
+                  value="fr"></option>
+          <option id="optionJapanese"
+                  class="translate"
+                  label="日本語"
+                  data-content="日本語"
+                  value="ja"></option>
+          <option id="optionSpanish"
+                  class="translate"
+                  label="Español"
+                  data-content="Español"
+                  value="es"></option>
+        </select>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate"
+                data-content="Help">
+            Help
+          </span>
+        </span>
+      </div>
+      <fieldset class="menuForm">
+        <div class="flexBox">
+          <button class="grow translate left helpButton"
+                  data-content="Help"
+                  data-title="Documentation"
+                  title="Documentation">
+            Help
+          </button>
+
+          <button
+            class="tourButton translate ui-button ui-corner-all grow"
+            data-content="Tour"
+            data-title="Learn to use it in a few easy steps"
+            title="Learn to use it in a few easy steps">
+            Tour
+          </button>
+
+        </div>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate menuTourItem"
+                data-step="1"
+                data-content="Feeds">
+            Feeds
+          </span>
+        </span>
+      </div>
+      <fieldset class="feedsMenuForm">
+        <div class="flexBox">
+          <input id="fileImport"
+                 type="file" />
+          <button id="fileImportButton"
+                  class="grow translate"
+                  data-title="Open / import tabs and feeds">
+            <i class="icon-upload"></i>
+            <span class="translate"
+                  data-content="Open">
+              Open
+            </span>
+          </button>
+          <button id="saveTabs"
+                  class="grow translate"
+                  data-title="Save / export tabs and feeds">
+            <i class="icon-download"></i>
+            <span class="translate"
+                  data-content="Save">
+              Save
+            </span>
+          </button>
+          <button id="resetTabs"
+                  class="grow translate"
+                  data-title="Reset tabs and feeds">
+            <i class="icon-refresh"></i>
+            <span class="translate"
+                  data-content="Reset">
+              Reset
+            </span>
+          </button>
+        </div>
+        <div id="syncBox" class="grow"></div>
+        <div id="progressBar" class="grow"><div class="progress-label"></div></div>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate"
+                data-content="Theme">
+            Theme
+          </span>
+        </span>
+      </div>
+      <fieldset class="menuForm">
+        <div id="themeBox"
+             class="flexBox">
+        </div>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate"
+                data-content="Media preloading">
+            Media preloading
+          </span>
+        </span>
+      </div>
+      <fieldset class="menuForm">
+        <div id="mediaPreloadBox"
+             class="flexBox">
+        </div>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate"
+                data-content="Image gallery">
+            Image gallery
+          </span>
+        </span>
+      </div>
+      <fieldset id="galleryBox"
+                class="menuForm">
+        <div id="gallerySlideshowSpeed"></div>
+        <div class="flexBox">
+          <div class="grow">
+            <label for="gallerySpeed" class="ui-helper-hidden">
+              <input type="text" id="gallerySpeed" />
+            </label>
+            <div id="gallerySpeedSlider"
+                 data-title="Slideshow speed"
+                 class="translate">
+            </div>
+          </div>
+
+          <div class="shrink">
+
+            <input id="gallerySpeedSpinner"
+                   class="translate"
+                   data-title="Slideshow speed"
+                   name="value">
+          </div>
+          <select id="gallerySlideTransition"
+                  class="grow unique translate"
+                  data-title="Slide transition">
+            <option class="translate"
+                    data-content="None"
+                    value="false">None</option>
+            <option class="translate"
+                    data-content="Fade"
+                    value="fade">Fade</option>
+            <option class="translate"
+                    data-content="Slide"
+                    value="slide">Slide</option>
+            <option class="translate"
+                    data-content="Circular"
+                    value="circular">Circular</option>
+            <option class="translate"
+                    data-content="Tube"
+                    value="tube">Tube</option>
+            <option class="translate"
+                    data-content="Zoom"
+                    value="zoom-in-out">Zoom-in-out</option>
+            <option class="translate"
+                    data-content="Rotate"
+                    value="rotate">Rotate</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate menuTourItem"
+                data-step="2"
+                data-content="Search prefix">
+            Search prefix
+          </span>
+        </span>
+      </div>     
+      <fieldset class="menuForm searchPrefixFieldset">
+        <div class="flexBox">
+          <input name="searchPrefix"
+                 type="text"
+                 id="searchPrefixInput"
+                 class="unique grow translate"
+                 placeholder="Search prefix"
+                 data-title="Search prefix"
+                 title="Search prefix"
+                 value="" />
+          <button id="searchPrefixOkButton"
+                  class="shrink translate ui-button ui-corner-all ui-widget"
+                  data-title="OK"
+                  data-content="OK"
+                  title="OK"
+                  type="button">
+            OK
+          </button>
+
+          <button id="searchPrefixRestoreButton"
+                  data-title="Restore default search prefix"
+                  data-content="Restore default"
+                  class="grow translate ui-button ui-corner-all"
+                  type="button"
+                  title="Restore default search prefix">
+            Restore default
+          </button>
+        </div>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate menuTourItem"
+                data-step="3"
+                data-content="Pétrolette">
+            Pétrolette
+          </span>
+        </span>
+      </div>     
+      <fieldset class="menuForm ptlFieldset">
+        <div class="flexBox">
+
+          <a class="helpBookmarklet grow ui-button ui-corner-all translate unique"
+             data-title='Drag me to the bookmark bar, or right click "Bookmark this link"'
+             title='Drag me to the bookmark bar, or right click "Bookmark this link"'
+             data-content="Add to Pétrolette">
+            Add to Pétrolette
+          </a>
+
+          <a href="https://framagit.org/yphil/petrolette"
+             class="grow ui-button ui-corner-all translate left"
+             data-title="Use the force - read the Source"
+             title="Use the force - read the Source"
+             data-content="Source">
+            Source
+          </a>
+          <a href="about/javascript"
+             data-jslicense="1"
+             class="grow ui-button ui-corner-all translate"
+             data-title="JavaScript licensing information"
+             title="JavaScript licensing information"
+             data-content="License">
+            License
+          </a>
+        </div>
+      </fieldset>
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate menuTourItem"
+                data-step="4"
+                data-content="Support">
+            Support
+          </span>
+        </span>
+      </div>
+      <fieldset id="support">
+        <div class="flexBox" id="liberapay">
+          <a id="lPayAmount" href="https://liberapay.com/yPhil/">
+            <img width="156" height="20" alt="Support Pétrolette" class="b-lazy" src="https://img.shields.io/liberapay/receives/yPhil.svg?logo=liberapay" />
+          </a>
+          <a id="lPayPatrons" href="https://liberapay.com/yPhil/">
+            <img width="82" height="20" alt="Support Pétrolette" class="b-lazy" src="https://img.shields.io/liberapay/patrons/yPhil.svg?logo=liberapay">
+          </a>
+        </div>
+
+        <ul id="kofi" class="fundingLinks">
+          <li>
+            <span class="translate" data-content="You can also use">You can also use</span> <a class="plop" target="_blank" href="https://ko-fi.com/yphil/tiers">☕ Ko-fi</a> 💚
+          </li>
+        </ul>
+        
+      </fieldset>
+
+
+      <div class="sideMenuTitleToggleDiv ui-corner-top hover">
+        <span class="sideMenuSectionToggle">
+          <i class="icon-right rotate unfold"></i>
+          <span class="translate"
+                data-content="Console">
+            Console
+          </span>
+        </span>
+      </div>
+      <fieldset>
+        <div class="flexBox">
+          <div
+            class="grow"
+            data-title="Click to toggle"
+            title="Click to toggle"
+            id="console">
+          </div>
+        </div>
+      </fieldset>
+    </nav>
+
+    <main>
+
+      <div id="tabs">
+        <ul id="tabNamesUl">
+
+        </ul>
+      </div>
+
+      <noscript>
+        <div class="disabledFeature">
+          <h1>Pétrolette</h1>
+          <h3>...Needs JavaScript to work.</h3>
+          <p>
+            NB: All JS code on Pétrolette is Free, Libre and Open-Source Software : <a class="docLink" href="about/javascript" data-jslicense="1">Read JavaScript Modules license information</a>.
+          </p>
+        </div>
+      </noscript>
+
+      <div id="noDomStorage" class="disabledFeature">
+        <h1>Pétrolette</h1>
+        <h3>...Needs DOM Local Storage to work.</h3>
+        <p>
+          Please enable it in your browser : <a class="docLink" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">read about local storage on MDN</a>.
+        </p>
+      </div>
+      
+      <div id="ptlDialogs"></div>
+
+      <span style="display:none;"
+            id="backToTop"
+            class="jsEnabledOnly">
+        <i class="icon-up"></i>
+      </span>
+
+      <div id="loadSpinner"
+           class="dead-center hidden">
+        <div>
+          <i class="icon-refresh spin"></i>
+          <div
+            data-content="Loading"
+            class="translate">Loading</div>
+        </div>
+      </div>
+
+    </main>
+
+    <script src="static/js/PTL.dialog.js"></script>
+    <script src="static/js/PTL.util.js"></script>
+    <script src="static/js/PTL.tab.js"></script>
+    <script src="static/js/PTL.col.js"></script>
+    <script src="static/js/PTL.feed.js"></script>
+    <script src="static/js/PTL.sync.js"></script>
+
+    <script>
+
+      $(document).ready(function() {
+
+
+        PTL.queryString = DOMPurify.sanitize('');;
+        PTL.instanceType = 'multiUser';
+        
+        PTL.start();
+        PTL.tab.init();
+
+        (function(){
+          setTimeout(function(){
+            PTL.util.beg();
+          }, 900000); // 15 minutes
+        })();
+
+      });
+
+      </script>
+
+    <div id="notify" style="display:none">
+      <h4 class="translate">$nbsp;</h4>
+      <p class="translate">$nbsp;</p>
+    </div>
+
+    <script async src="responsively-lazy/responsivelyLazy.min.js"></script>
+
+  </body>
+</html>

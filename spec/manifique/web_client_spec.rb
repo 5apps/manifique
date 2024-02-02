@@ -165,9 +165,9 @@ RSpec.describe Manifique::WebClient do
   end
 
   describe "#fetch_metadata" do
-    let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social/") }
-
     context "web app manifest present" do
+      let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social/") }
+
       before do
         index_html = File.read(File.join(__dir__, "..", "fixtures", "mastodon.html"));
         stub_request(:get, "https://kosmos.social/").
@@ -207,7 +207,10 @@ RSpec.describe Manifique::WebClient do
       end
     end
 
+
     context "no web app manifest present" do
+      let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social/") }
+
       before do
         index_html = File.read(File.join(__dir__, "..", "fixtures", "mastodon-no-manifest.html"));
         stub_request(:get, "https://kosmos.social/").
@@ -257,6 +260,8 @@ RSpec.describe Manifique::WebClient do
     end
 
     context "with data URL icons" do
+      let(:web_client) { Manifique::WebClient.new(url: "https://kosmos.social/") }
+
       before do
         index_html = File.read(File.join(__dir__, "..", "fixtures", "kommit.html"));
         stub_request(:get, "https://kosmos.social/").
@@ -285,6 +290,33 @@ RSpec.describe Manifique::WebClient do
         expect(apple_touch_icons.length).to eq(1)
         expect(apple_touch_icons.first["type"]).to eq("image/jpg")
         expect(apple_touch_icons.first["sizes"]).to be_nil
+      end
+    end
+
+    context "empty values in manifest" do
+      let(:web_client) { Manifique::WebClient.new(url: "https://petrolette.space/") }
+
+      before do
+        index_html = File.read(File.join(__dir__, "..", "fixtures", "petrolette.html"));
+        stub_request(:get, "https://petrolette.space/").
+          to_return(body: index_html, status: 200, headers: {
+            "Content-Type": "text/html; charset=utf-8"
+          })
+        manifest = File.read(File.join(__dir__, "..", "fixtures", "petrolette-web-app-manifest.json"));
+        stub_request(:get, "https://petrolette.space/static/images/favicons/site.webmanifest").
+          to_return(body: manifest, status: 200, headers: {
+            "Content-Type": "application/manifest+json"
+          })
+      end
+
+      subject { web_client.fetch_metadata }
+
+      it "loads empty manifest values from HTML" do
+        expect(subject.name).to eq("Pétrolette")
+      end
+
+      it "discards empty manifest values with no HTML equivalent" do
+        expect(subject.short_name).to be_nil
       end
     end
   end
