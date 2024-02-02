@@ -72,16 +72,6 @@ Bug reports and pull requests are welcome on GitHub at
 https://github.com/5apps/manifique. Please add specs for any changes or
 additions.
 
-## License
-
-The gem is available as open source under the terms of the [AGPL
-3](https://opensource.org/licenses/AGPL-3.0).
-
-TL;DR: if you use this gem in a project, the entire project's source has to be
-made available as open source.
-
-_TODO add information about dual/commercial licensing_
-
 ## Code of Conduct
 
 Everyone interacting in this project’s codebase, issue trackers, and chat

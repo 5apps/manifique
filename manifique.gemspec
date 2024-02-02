@@ -5,13 +5,13 @@ require "manifique/version"
 Gem::Specification.new do |spec|
   spec.name          = "manifique"
   spec.version       = Manifique::VERSION
-  spec.authors       = ["Sebastian Kippe"]
-  spec.email         = ["sebastian@kip.pe"]
+  spec.authors       = ["Râu Cao"]
+  spec.email         = ["raucao@kosmos.org"]
 
   spec.summary       = %q{Fetch metadata and icons of Web applications}
   spec.description   = %q{Fetch metadata and icons of Web applications}
-  spec.homepage      = "https://5apps.com/opensource"
-  spec.license       = "AGPL"
+  spec.homepage      = "https://gitea.kosmos.org/5apps/manifique"
+  spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
